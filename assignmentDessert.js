@@ -1,9 +1,7 @@
 const express = require('express');
 const bodyParser = require("body-parser");
-const ShwarmaOrder = require("./assignment1Shwarma");
+const DessertOrder = require("./assignment1Dessert");
 
-
-// Create a new express application instance
 const app = express();
 
 app.use(bodyParser.urlencoded({extended:true}));
@@ -13,17 +11,16 @@ app.get("/users/:uname", (req, res) => {
     res.end("Hello " + req.params.uname);
 });
 
-let oOrders = {};
-
-app.post("/sms", (req, res) =>{
+let oDessertOrders = {};
+app.post("/sms", (req, res) => {
     let sFrom = req.body.From || req.body.from;
-    if(!oOrders.hasOwnProperty(sFrom)){
-        oOrders[sFrom] = new ShwarmaOrder();
+    if(!oDessertOrders.hasOwnProperty(sFrom)){
+        oDessertOrders[sFrom] = new DessertOrder();
     }
     let sMessage = req.body.Body|| req.body.body;
-    let aReply = oOrders[sFrom].handleInput(sMessage);
-    if(oOrders[sFrom].isDone()){
-        delete oOrders[sFrom];
+    let aReply = oDessertOrders[sFrom].handleInput(sMessage);
+    if(oDessertOrders[sFrom].isDone()){
+        delete oDessertOrders[sFrom];
     }
     res.setHeader('content-type', 'text/xml');
     let sResponse = "<Response>";
